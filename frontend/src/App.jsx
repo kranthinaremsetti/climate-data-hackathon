@@ -75,7 +75,7 @@ export default function App() {
           <div className="space-y-8 fade-in-up">
             {/* Large Price Chart */}
             <div className="scale-in">
-              <PriceChart prediction={data} />
+              <PriceChart prediction={data} tempChange={tempChange} />
             </div>
 
             {/* SECTION 3: Insight Cards (Bottom) */}

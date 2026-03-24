@@ -37,7 +37,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   )
 }
 
-export default function PriceChart({ prediction }) {
+export default function PriceChart({ prediction, tempChange = 0 }) {
   if (!prediction) return null
 
   const company = getCompanyByTicker(prediction.company)
@@ -47,38 +47,49 @@ export default function PriceChart({ prediction }) {
   const plus1Price = prediction.plus_1_degree_scenario.predicted_price
   const plus2Price = prediction.plus_2_degree_scenario.predicted_price
 
+  // Calculate actual temperature values
+  const temp0 = tempChange
+  const temp1 = tempChange + 1
+  const temp2 = tempChange + 2
+
   // Debug: Log chart updates
   console.log('📊 PriceChart rendering with:', {
     company: prediction.company,
     month: prediction.month,
-    tempChange: prediction.temp_change || 'N/A',
+    tempChange,
+    temp0,
+    temp1,
+    temp2,
     basePrice,
     plus1Price,
     plus2Price,
   })
 
-  // Create chart data with 3 scenarios
+  // Create chart data with 3 scenarios - with dynamic temperature labels
   const chartData = [
     {
-      label: 'Baseline (0°C)',
+      label: `Baseline (${temp0}°C)`,
       price: basePrice,
-      scenario: '0°C',
+      scenario: `${temp0}°C`,
       basePrice: basePrice,
       change: null,
+      tempValue: temp0,
     },
     {
-      label: '+1°C Scenario',
+      label: `${temp1}°C Scenario`,
       price: plus1Price,
-      scenario: '+1°C',
+      scenario: `${temp1}°C`,
       basePrice: basePrice,
       change: ((plus1Price - basePrice) / basePrice) * 100,
+      tempValue: temp1,
     },
     {
-      label: '+2°C Scenario',
+      label: `${temp2}°C Scenario`,
       price: plus2Price,
-      scenario: '+2°C',
+      scenario: `${temp2}°C`,
       basePrice: basePrice,
       change: ((plus2Price - basePrice) / basePrice) * 100,
+      tempValue: temp2,
     },
   ]
 
@@ -161,9 +172,9 @@ export default function PriceChart({ prediction }) {
       {/* Scenario Comparison Table */}
       <div className="grid grid-cols-3 gap-4 mb-6 stagger-animation">
         {[
-          { label: 'Baseline (0°C)', price: basePrice, change: null, color: 'emerald', bgColor: 'bg-neutral' },
-          { label: '+1°C Scenario', price: plus1Price, change: ((plus1Price - basePrice) / basePrice) * 100, color: 'amber', bgColor: 'bg-positive' },
-          { label: '+2°C Scenario', price: plus2Price, change: ((plus2Price - basePrice) / basePrice) * 100, color: 'red', bgColor: 'bg-highlight' },
+          { label: `${temp0}°C (Current)`, price: basePrice, change: null, color: 'emerald', bgColor: 'bg-neutral' },
+          { label: `${temp1}°C Scenario`, price: plus1Price, change: ((plus1Price - basePrice) / basePrice) * 100, color: 'amber', bgColor: 'bg-positive' },
+          { label: `${temp2}°C Scenario`, price: plus2Price, change: ((plus2Price - basePrice) / basePrice) * 100, color: 'red', bgColor: 'bg-highlight' },
         ].map((item) => {
           const isUp = item.change > 0
           const colorClass =
