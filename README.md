@@ -495,4 +495,4 @@ Perfect for:
 
 **Status:** ✅ Production Ready  
 **Last Updated:** March 23, 2026  
-**Deployed Backend:** https://climate-data-hackathon.onrender.com
+**Deployed Backend:** https://climate-data-hackathon-835468736823.europe-west1.run.app
