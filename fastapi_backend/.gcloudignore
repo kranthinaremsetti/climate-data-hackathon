@@ -1,0 +1,10 @@
+# .gcloudignore for Cloud Run deployment
+__pycache__
+.pytest_cache
+.venv
+venv
+*.pyc
+*.pyo
+.DS_Store
+.git
+.gitignore

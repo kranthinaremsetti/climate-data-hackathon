@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
 import numpy as np
+import os
+
+# Port configuration for Cloud Run
+port = int(os.environ.get("PORT", 8080))
 
 app = FastAPI()
 
@@ -132,6 +136,7 @@ def predict(company: str = "NTPC.NS", month: int = 5, temp_change: float = 0):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000, reload=False)
+    uvicorn.run(app, host="0.0.0.0", port=port, reload=False)
